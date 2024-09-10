@@ -22,8 +22,13 @@ export const getAllProducts = async (_req, res) => {
 };
 
 export const getProductById = async (req, res) => {
+  const { id } = req.params;
+  const productId = Number(id); // Convert to Number
+  if (isNaN(productId)) {
+    return errorResponse(res, 401, "Invalid Product ID");
+  }
   try {
-    const product = await productService.getProductById(req.params.id);
+    const product = await productService.getProductById({ productId });
     if (!product) return errorResponse(res, 404, productMessages.PRODUCT_NOT_FOUND);
     return successResponse(res, 200, productMessages.PRODUCT_FETCH, { product });
   } catch (error) {
@@ -32,8 +37,13 @@ export const getProductById = async (req, res) => {
 };
 
 export const updateProductById = async (req, res) => {
+  const { id } = req.params;
+  const productId = Number(id); // Convert to Number
+  if (isNaN(productId)) {
+    return errorResponse(res, 400, "Invalid Product ID");
+  }
   try {
-    const product = await productService.updateProductById(req.params.id, req.body);
+    const product = await productService.updateProductById({ productId }, req.body, { new: true });
     if (!product) return errorResponse(res, 404, productMessages.PRODUCT_NOT_FOUND);
     return successResponse(res, 200, productMessages.PRODUCT_UPDATED, { product });
   } catch (error) {
@@ -42,8 +52,13 @@ export const updateProductById = async (req, res) => {
 };
 
 export const deleteProductById = async (req, res) => {
+  const { id } = req.params;
+  const productId = Number(id); // Convert to Number
+  if (isNaN(productId)) {
+    return errorResponse(res, 400, "Invalid Product ID");
+  }
   try {
-    const deletedProduct = await productService.deleteProductById(req.params.id);
+    const deletedProduct = await productService.deleteProductById({ productId });
     if (!deletedProduct) errorResponse(res, 404, productMessages.PRODUCT_NOT_FOUND);
     return successResponse(res, 200, productMessages.PRODUCT_DELETED);
   } catch (error) {

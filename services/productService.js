@@ -11,15 +11,15 @@ export const getAllProducts = async () => {
 };
 
 export const getProductById = async (id) => {
-  return await Product.findById(id).populate('createdBy', 'username');
+  return await Product.findOne(id).populate('createdBy', 'username');
 };
 
 export const updateProductById = async (id, data) => {
-  return await Product.findByIdAndUpdate(id, data, { new: true });
+  return await Product.findOneAndUpdate(id, data, { new: true });
 };
 
 export const deleteProductById = async (id) => {
-  return await Product.findByIdAndDelete(id);
+  return await Product.findOneAndDelete(id);
 };
 
 export const deleteAllProduct = async () => {
